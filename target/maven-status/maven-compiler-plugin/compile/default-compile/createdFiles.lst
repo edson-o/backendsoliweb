@@ -1,0 +1,11 @@
+com\pe\solicitud\controller\WebRequestController.class
+com\pe\solicitud\repository\RoleRepo.class
+com\pe\solicitud\repository\WebRequestRepo.class
+com\pe\solicitud\controller\RoleController.class
+com\pe\solicitud\controller\LoginController.class
+com\pe\solicitud\entity\Account.class
+com\pe\solicitud\entity\WebRequest.class
+com\pe\solicitud\repository\AccountRepo.class
+com\pe\solicitud\entity\Role.class
+com\pe\solicitud\SolicitudWebBootMain.class
+com\pe\solicitud\controller\AccountController.class
