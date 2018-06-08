@@ -1,5 +1,10 @@
 package com.pe.solicitud.controller;
 
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,11 +52,25 @@ public class AccountController {
 	public String save(@RequestBody Account account) {
 		String msg = "";
 
-		if (account != null) {
-			msg = "Action => Successfull";
-			accountRepo.save(account);
-		} else {
-			msg = "Error";
+		try {
+			LocalDateTime date = LocalDateTime.now();
+			DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+			String sdate = date.format(format);
+
+			SimpleDateFormat dts = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+			Date datess = dts.parse(sdate);
+			if (account != null) {
+				msg = "OK";
+				account.setCreation(datess);
+				account.setFlag(1);
+				accountRepo.save(account);
+			} else {
+				msg = "NULL";
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		return msg;

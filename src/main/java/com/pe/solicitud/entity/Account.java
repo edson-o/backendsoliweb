@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -21,7 +22,10 @@ public class Account {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
+	@NotNull
 	private String usuario;
+
+	@NotNull
 	private String password;
 	private String name;
 	private String phone;
@@ -29,11 +33,9 @@ public class Account {
 	private int flag;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	private Date creation;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	private Date modified;
 
 	@ManyToOne
