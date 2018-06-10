@@ -15,6 +15,7 @@ import com.pe.solicitud.entity.Account;
 import com.pe.solicitud.entity.WebRequest;
 import com.pe.solicitud.repository.AccountRepo;
 import com.pe.solicitud.repository.WebRequestRepo;
+import com.pe.solicitud.util.DateFormat;
 
 @RestController
 @RequestMapping("/webrequest")
@@ -25,6 +26,9 @@ public class WebRequestController {
 
 	@Autowired
 	AccountRepo accountRepo;
+
+	@Autowired
+	DateFormat dateFormat;
 
 	@GetMapping("/list")
 	public List<WebRequest> list(@RequestParam("idaccount") Integer idaccount, @RequestParam("flag") Integer flag) {

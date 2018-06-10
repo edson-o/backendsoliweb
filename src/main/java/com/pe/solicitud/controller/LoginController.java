@@ -1,6 +1,5 @@
 package com.pe.solicitud.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +22,6 @@ public class LoginController {
 	public List<Account> Login(@RequestBody Account account) {
 
 		List<Account> list = accountRepo.login(account.getUsuario(), account.getPassword());
-		if (list == null) {
-			list = new ArrayList<>();
-		}
-
 		return list;
 	}
 

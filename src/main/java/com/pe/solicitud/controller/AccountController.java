@@ -2,6 +2,8 @@ package com.pe.solicitud.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,9 +32,10 @@ public class AccountController {
 
 	@GetMapping(value = "/getId", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public Account getById(@RequestParam("id") Integer id) {
-		System.out.println("id: " + id);
+
 		if (id != null) {
 			Account account = accountRepo.getById(id);
+
 			if (account != null) {
 				return account;
 			} else {
@@ -53,11 +56,25 @@ public class AccountController {
 	@PostMapping("/save")
 	public String save(@RequestBody Account account) {
 
+		List<Account> list = accountRepo.list();
+
+		list.stream().forEach(item -> {
+			if (item.getUsuario().equals(account.getUsuario())) {
+				msg = "ERROR";
+			}
+		});
+
 		if (account != null) {
-			msg = "OK";
-			account.setCreation(dateFormat.dateActual());
-			account.setFlag(1);
-			accountRepo.save(account);
+
+			if (!msg.equals("ERROR")) {
+				msg = "OK";
+				account.setCreation(dateFormat.dateActual());
+				account.setFlag(1);
+				accountRepo.save(account);
+			} else {
+				msg = "Duplicidad de Usuario";
+			}
+
 		} else {
 			msg = "NULL";
 		}

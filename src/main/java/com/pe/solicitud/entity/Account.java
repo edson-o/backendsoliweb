@@ -25,6 +25,7 @@ public class Account {
 
 	@NotNull
 	private String password;
+	
 	private String name;
 	private String phone;
 	private String email;
