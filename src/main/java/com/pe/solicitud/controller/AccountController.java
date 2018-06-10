@@ -1,10 +1,6 @@
 package com.pe.solicitud.controller;
 
 import java.util.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pe.solicitud.entity.Account;
 import com.pe.solicitud.repository.AccountRepo;
+import com.pe.solicitud.util.DateFormat;
 
 @RestController
 @RequestMapping("/account")
@@ -25,6 +22,11 @@ public class AccountController {
 
 	@Autowired
 	AccountRepo accountRepo;
+
+	@Autowired
+	DateFormat dateFormat;
+
+	private String msg = "";
 
 	@GetMapping(value = "/getId", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public Account getById(@RequestParam("id") Integer id) {
@@ -50,27 +52,14 @@ public class AccountController {
 
 	@PostMapping("/save")
 	public String save(@RequestBody Account account) {
-		String msg = "";
 
-		try {
-			LocalDateTime date = LocalDateTime.now();
-			DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-			String sdate = date.format(format);
-
-			SimpleDateFormat dts = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
-			Date datess = dts.parse(sdate);
-			if (account != null) {
-				msg = "OK";
-				account.setCreation(datess);
-				account.setFlag(1);
-				accountRepo.save(account);
-			} else {
-				msg = "NULL";
-			}
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (account != null) {
+			msg = "OK";
+			account.setCreation(dateFormat.dateActual());
+			account.setFlag(1);
+			accountRepo.save(account);
+		} else {
+			msg = "NULL";
 		}
 
 		return msg;
@@ -78,29 +67,37 @@ public class AccountController {
 
 	@PostMapping("/update")
 	public String update(@RequestBody Account account) {
-		String msg = "";
+
 		Account getaccount = accountRepo.getById(account.getId());
+		System.out.println("getaccount: " + getaccount);
 		if (getaccount != null) {
-			msg = "Action => Upadte";
+			msg = "OK";
+			Date date = getaccount.getCreation();
+			account.setCreation(date);
+			account.setModified(dateFormat.dateActual());
+			account.setFlag(1);
 			accountRepo.update(account);
 		} else {
-			msg = "Error";
+			msg = "NULL";
 		}
 
 		return msg;
 	}
 
 	@GetMapping("/delete")
-	public String delete(@RequestParam("id") int id) {
-		String msg = "";
-		Account account = accountRepo.getById(id);
+	public String delete(@RequestParam("id") Integer id) {
 
-		if (account != null) {
-			msg = "Action => Deleted";
-			account.setFlag(0);
-			accountRepo.delete(account);
+		if (id != null) {
+			Account account = accountRepo.getById(id);
+			if (account != null) {
+				msg = "OK";
+				account.setFlag(0);
+				accountRepo.delete(account);
+			} else {
+				msg = "NULL";
+			}
 		} else {
-			msg = "Error";
+			msg = "NULL";
 		}
 
 		return msg;
