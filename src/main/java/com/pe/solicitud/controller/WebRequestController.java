@@ -45,10 +45,10 @@ public class WebRequestController {
 		String msg = "";
 
 		if (webRequest != null) {
-			msg = "Action => Successfull";
+			msg = "OK";
 			webRequestRepo.save(webRequest);
 		} else {
-			msg = "Error";
+			msg = "NULL";
 		}
 
 		return msg;
@@ -59,10 +59,10 @@ public class WebRequestController {
 		String msg = "";
 		WebRequest obj = webRequestRepo.getById(webRequest.getId());
 		if (obj != null) {
-			msg = "Action => Upadte";
+			msg = "OK";
 			webRequestRepo.update(webRequest);
 		} else {
-			msg = "Error";
+			msg = "NULL";
 		}
 
 		return msg;
