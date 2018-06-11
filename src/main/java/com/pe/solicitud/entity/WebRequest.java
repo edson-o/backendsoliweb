@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -40,25 +41,26 @@ public class WebRequest {
 	private String questionone; // pregunta uno;
 	private double budget; // presupuesto
 	private int currency; // '1:Soles;2:Dolares' //moneda
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	private Date created; // creado
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	private Date modified; // modificado
-	
+
 	@Temporal(TemporalType.TIME)
 	@DateTimeFormat(pattern = "hh:mm:ss")
 	private Date dateend; // Fecha en que termina el formulario;
-	
+
 	@Temporal(TemporalType.TIME)
 	@DateTimeFormat(pattern = "hh:mm:ss")
 	private Date datestart; // Fecha en que inicia el Formulario;
-	
+
 	private int Flag;
 
+	@NotNull
 	@ManyToOne
 	private Account account;
 

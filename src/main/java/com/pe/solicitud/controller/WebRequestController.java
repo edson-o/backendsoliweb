@@ -1,6 +1,7 @@
 package com.pe.solicitud.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,34 @@ public class WebRequestController {
 	DateFormat dateFormat;
 
 	@GetMapping("/list")
-	public List<WebRequest> list(@RequestParam("idaccount") Integer idaccount, @RequestParam("flag") Integer flag) {
+	public List<WebRequest> list(@RequestParam("idaccount") Integer idaccount) {
 		List<WebRequest> lista = new ArrayList<>();
 
-		Account account = accountRepo.getById(idaccount);
-		lista = webRequestRepo.list(account, flag);
+		if (idaccount != null) {
+			Account account = accountRepo.getById(idaccount);
+			lista = webRequestRepo.list(account);
+		} else {
+			return null;
+		}
 		return lista;
+
+	}
+
+	@GetMapping("/getid")
+	public WebRequest GetId(@RequestParam("id") Integer id) {
+		WebRequest webRequest = new WebRequest();
+
+		if (id != null) {
+			webRequest = webRequestRepo.getById(id);
+			if (webRequest != null) {
+				return webRequest;
+			} else {
+				return new WebRequest();
+			}
+
+		} else {
+			return new WebRequest();
+		}
 
 	}
 
@@ -46,6 +69,8 @@ public class WebRequestController {
 
 		if (webRequest != null) {
 			msg = "OK";
+			webRequest.setCreated(dateFormat.dateActual());
+			webRequest.setFlag(1);
 			webRequestRepo.save(webRequest);
 		} else {
 			msg = "NULL";
@@ -58,8 +83,13 @@ public class WebRequestController {
 	public String update(@RequestBody WebRequest webRequest) {
 		String msg = "";
 		WebRequest obj = webRequestRepo.getById(webRequest.getId());
+
 		if (obj != null) {
 			msg = "OK";
+			Date created = obj.getCreated();
+			webRequest.setCreated(created);
+			webRequest.setModified(dateFormat.dateActual());
+			webRequest.setFlag(1);
 			webRequestRepo.update(webRequest);
 		} else {
 			msg = "NULL";
@@ -69,17 +99,20 @@ public class WebRequestController {
 	}
 
 	@PostMapping("/delete")
-	public String delete(@RequestParam("id") int id) {
+	public String delete(@RequestParam("id") Integer id) {
 		String msg = "";
 
-		WebRequest obj = webRequestRepo.getById(id);
-
-		if (obj != null) {
-			msg = "Action => Deleted";
-			obj.setFlag(0);
-			webRequestRepo.delete(obj);
+		if (id != null) {
+			WebRequest obj = webRequestRepo.getById(id);
+			if (obj != null) {
+				msg = "OK";
+				obj.setFlag(0);
+				webRequestRepo.delete(obj);
+			} else {
+				msg = "NULL";
+			}
 		} else {
-			msg = "Error";
+			msg = "NULL";
 		}
 
 		return msg;

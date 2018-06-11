@@ -37,24 +37,16 @@ public class WebRequestRepo {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<WebRequest> list(Account account, Integer flag) {
-		String sql = " select w from WebRequest w where 1=1 ";
+	public List<WebRequest> list(Account account) {
+		String sql = " select w from WebRequest w where flag=1 ";
 		if (account != null) {
 			sql = sql + " and account = :account ";
-		}
-
-		if (flag != null) {
-			sql = sql + " and flag = :flag ";
 		}
 
 		Query query = em.createQuery(sql);
 
 		if (account != null) {
 			query.setParameter("account", account);
-		}
-
-		if (flag != null) {
-			query.setParameter("flag", flag);
 		}
 
 		return query.getResultList();
