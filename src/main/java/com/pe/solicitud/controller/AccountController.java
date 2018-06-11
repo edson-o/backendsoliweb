@@ -2,8 +2,6 @@ package com.pe.solicitud.controller;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,7 +28,7 @@ public class AccountController {
 
 	private String msg = "";
 
-	@GetMapping(value = "/getId", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	@GetMapping(value = "/getid", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public Account getById(@RequestParam("id") Integer id) {
 
 		if (id != null) {
